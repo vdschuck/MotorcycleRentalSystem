@@ -8,5 +8,9 @@ public interface IMotorcycleRepository
 
     Task<Motorcycle?> GetByIdAsync(string id);
 
-    Task AddAsync(Motorcycle moto);
+    Task<int> AddAsync(Motorcycle moto);
+
+    Task<int> UpdateAsync(Motorcycle moto);
+
+    Task<int> DeleteByIdAsync(string id);
 }

@@ -16,7 +16,19 @@ public class MotorcycleRepository(PostgreDbContext context) : IMotorcycleReposit
         return context.Motorcycles.FindAsync(id).AsTask();
     }
 
-    public Task AddAsync(Motorcycle moto)
+    public Task<int> UpdateAsync(Motorcycle moto)
+    {
+        context.Motorcycles.Update(moto);
+        return context.SaveChangesAsync();
+    }
+
+    public Task<int> DeleteByIdAsync(string id)
+    {
+        context.Motorcycles.Where(motorcycle => motorcycle.Id == id).ExecuteDeleteAsync();
+        return context.SaveChangesAsync();
+    }
+
+    public Task<int> AddAsync(Motorcycle moto)
     {
         context.Motorcycles.Add(moto);
         return context.SaveChangesAsync();

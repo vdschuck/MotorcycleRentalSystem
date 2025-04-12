@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MotorcycleRentalSystem.Application.Motorcycle;
+using MotorcycleRentalSystem.Application.Rent;
 using MotorcycleRentalSystem.Domain.Repositories;
 using MotorcycleRentalSystem.Infrastructure;
 using MotorcycleRentalSystem.Infrastructure.Repositories;
@@ -12,9 +13,11 @@ builder.Services.AddDbContext<PostgreDbContext>(options =>
 
 // Repositories
 builder.Services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
+builder.Services.AddScoped<IRentRepository, RentRepository>();
 
 // Services
 builder.Services.AddScoped<IMotorcycleService, MotorcycleService>();
+builder.Services.AddScoped<IRentService, RentService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

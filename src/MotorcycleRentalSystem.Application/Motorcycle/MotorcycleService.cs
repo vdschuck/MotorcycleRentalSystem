@@ -1,11 +1,48 @@
+using Microsoft.Extensions.Logging;
 using MotorcycleRentalSystem.Domain.Repositories;
 
 namespace MotorcycleRentalSystem.Application.Motorcycle;
 
-public class MotorcycleService(IMotorcycleRepository repository) : IMotorcycleService
+public class MotorcycleService(IMotorcycleRepository repository, ILogger<MotorcycleService> logger) : IMotorcycleService
 {
-    public Task RegisterNewMotorcycleAsync(CreateMotorcycleRequest data)
+    public Task<int> RegisterNewMotorcycleAsync(CreateMotorcycleRequest data)
     {
-        return Task.FromResult("");
+        logger.LogInformation("Register new motorcycle with {Plate}", data.Plate);
+        var newMoto = new Domain.Entities.Motorcycle();
+        newMoto.CreateNewMotorcycle(data.Id, data.Year, data.Plate, data.Model);
+        return repository.AddAsync(newMoto);
+    }
+
+    public async Task<GetMotorcycleResponse?> GetMotorcycleByIdAsync(string id)
+    {
+        logger.LogInformation("Get motorcycle with id {id}", id);
+        var result = await repository.GetByIdAsync(id);
+        logger.LogInformation(result == null
+            ? "Motorcycle with Id {id} not found"
+            : "Motorcycle with Id {id} found", id);
+        return result is null ? null : new GetMotorcycleResponse(result);
+    }
+
+    public async Task<List<GetMotorcycleResponse>> GetAllMotorcyclesAsync()
+    {
+        logger.LogInformation("Get a list of motorcycles");
+        var result = await repository.GetAllAsync();
+        return result.Select(moto => new GetMotorcycleResponse(moto)).ToList();
+    }
+
+    public Task<int> DeleteMotorcycleAsync(string id)
+    {
+        logger.LogInformation("Delete an motorcycle by {id}", id);
+        return repository.DeleteByIdAsync(id);
+    }
+
+    public async Task<int> UpdatePlateNumberAsync(string id, UpdateMotorcycleRequest data)
+    {
+        logger.LogInformation("Update motorcycle plate with {id}", id);
+        var motorcycle = await repository.GetByIdAsync(id);
+        if (motorcycle == null) return 0;
+
+        motorcycle.UpdatePlate(data.Plate);
+        return await repository.UpdateAsync(motorcycle);
     }
 }
