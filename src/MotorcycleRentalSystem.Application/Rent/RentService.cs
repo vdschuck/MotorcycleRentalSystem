@@ -9,18 +9,12 @@ public class RentService(
     ILogger<RentService> logger)
     : IRentService
 {
-    public Task ConsultRentAsync(string id)
-    {
-        logger.LogInformation("Consulting rent with {id}", id);
-        return repository.GetByIdAsync(id);
-    }
-
-    public async Task<(int, int)> MotorcycleDevolveProcessAsync(string id)
+    public async Task<(int, int)> MotorcycleDevolveProcessAsync(string id, DevolveMotorcycleRequest data)
     {
         logger.LogInformation("Devolving motorcycle rent with {id}", id);
         var rent = await repository.GetByIdAsync(id);
         if (rent == null) return (0, 0);
-        rent.ConcludeRental();
+        rent.ConcludeRental(data.DevolveDate);
         var rentUpdate = await repository.UpdateAsync(rent);
 
         logger.LogInformation("Making the motorcycle available for new rental {id}", rent.MotorcycleId);
@@ -36,8 +30,8 @@ public class RentService(
     {
         logger.LogInformation("Renting motorcycle with {motoId} {deliveryManId}", data.MotorcycleId,
             data.DeliveryManId);
-        var rental = new Domain.Entities.Rent();
-        rental.CreateNewRental(data.MotorcycleId, data.DeliveryManId, data.StartDate, data.EndDate,
+        var rental = Domain.Entities.Rent.CreateNewRental(data.MotorcycleId, data.DeliveryManId, data.StartDate,
+            data.EndDate,
             data.ExpectedEndDate, data.Plan);
         var rentUpdate = await repository.AddAsync(rental);
 
@@ -48,5 +42,12 @@ public class RentService(
         var motoUpdate = await motorcycleRepository.UpdateAsync(moto);
 
         return (rentUpdate, motoUpdate);
+    }
+
+    public async Task<GetRentResponse?> ConsultRentAsync(string id)
+    {
+        logger.LogInformation("Consulting rent with {id}", id);
+        var result = await repository.GetByIdAsync(id);
+        return result is null ? null : GetRentResponse.FromEntity(result);
     }
 }

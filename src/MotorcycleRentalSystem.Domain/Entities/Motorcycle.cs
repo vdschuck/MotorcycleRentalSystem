@@ -6,7 +6,7 @@ public class Motorcycle
     public int Year { get; private set; }
     public string Plate { get; private set; }
     public string Model { get; private set; }
-    public bool IsAvailable { get; private set; } = true;
+    public bool IsAvailable { get; private set; }
 
     public void UpdatePlate(string newPlate)
     {
@@ -25,11 +25,15 @@ public class Motorcycle
         IsAvailable = true;
     }
 
-    public void CreateNewMotorcycle(string id, int year, string plateNumber, string model)
+    public static Motorcycle CreateNewMotorcycle(string id, int year, string plateNumber, string model)
     {
-        Id = id;
-        Year = year;
-        Plate = plateNumber;
-        Model = model;
+        return new Motorcycle
+        {
+            Id = id,
+            Year = year,
+            Plate = plateNumber,
+            Model = model,
+            IsAvailable = true
+        };
     }
 }

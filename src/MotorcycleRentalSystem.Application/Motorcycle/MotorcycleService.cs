@@ -8,8 +8,7 @@ public class MotorcycleService(IMotorcycleRepository repository, ILogger<Motorcy
     public Task<int> RegisterNewMotorcycleAsync(CreateMotorcycleRequest data)
     {
         logger.LogInformation("Register new motorcycle with {Plate}", data.Plate);
-        var newMoto = new Domain.Entities.Motorcycle();
-        newMoto.CreateNewMotorcycle(data.Id, data.Year, data.Plate, data.Model);
+        var newMoto = Domain.Entities.Motorcycle.CreateNewMotorcycle(data.Id, data.Year, data.Plate, data.Model);
         return repository.AddAsync(newMoto);
     }
 
@@ -20,14 +19,15 @@ public class MotorcycleService(IMotorcycleRepository repository, ILogger<Motorcy
         logger.LogInformation(result == null
             ? "Motorcycle with Id {id} not found"
             : "Motorcycle with Id {id} found", id);
-        return result is null ? null : new GetMotorcycleResponse(result);
+
+        return result is null ? null : GetMotorcycleResponse.FromEntity(result);
     }
 
     public async Task<List<GetMotorcycleResponse>> GetAllMotorcyclesAsync()
     {
         logger.LogInformation("Get a list of motorcycles");
         var result = await repository.GetAllAsync();
-        return result.Select(moto => new GetMotorcycleResponse(moto)).ToList();
+        return result.Select(moto => GetMotorcycleResponse.FromEntity(moto)).ToList();
     }
 
     public Task<int> DeleteMotorcycleAsync(string id)

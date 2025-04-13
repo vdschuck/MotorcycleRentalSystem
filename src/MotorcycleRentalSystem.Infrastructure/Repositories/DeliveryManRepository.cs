@@ -3,6 +3,6 @@ using MotorcycleRentalSystem.Domain.Repositories;
 
 namespace MotorcycleRentalSystem.Infrastructure.Repositories;
 
-public class RentRepository(PostgreDbContext context) : Repository<Rent>(context), IRentRepository
+public class DeliveryManRepository(PostgreDbContext context) : Repository<DeliveryMan>(context), IDeliveryManRepository
 {
 }

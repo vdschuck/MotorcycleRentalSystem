@@ -2,9 +2,9 @@ namespace MotorcycleRentalSystem.Application.Rent;
 
 public interface IRentService
 {
-    Task ConsultRentAsync(string id);
+    Task<GetRentResponse?> ConsultRentAsync(string id);
 
-    Task<(int, int)> MotorcycleDevolveProcessAsync(string id);
+    Task<(int, int)> MotorcycleDevolveProcessAsync(string id, DevolveMotorcycleRequest data);
 
     Task<(int, int)> MotorcycleRentalProcessAsync(RentMotorcycleRequest data);
 }

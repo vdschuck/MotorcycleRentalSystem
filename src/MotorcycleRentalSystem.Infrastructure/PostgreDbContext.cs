@@ -8,6 +8,8 @@ public class PostgreDbContext(DbContextOptions<PostgreDbContext> options) : DbCo
     public DbSet<Motorcycle> Motorcycles { get; set; }
     public DbSet<Rent> Rents { get; set; }
 
+    public DbSet<DeliveryMan> DeliveryMans { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -25,20 +27,34 @@ public class PostgreDbContext(DbContextOptions<PostgreDbContext> options) : DbCo
 
         // Rent
         modelBuilder.Entity<Rent>().ToTable("Rent", "public");
+        modelBuilder.Entity<Rent>().Property(m => m.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Rent>(entity =>
         {
-            entity.HasKey(e => new { e.MotorcycleId, e.DeliveryManId });
+            entity.HasKey(e => e.Id);
             entity.Property(e => e.MotorcycleId).IsRequired();
             entity.Property(e => e.DeliveryManId).IsRequired();
             entity.Property(e => e.Plan);
-            entity.Property(e => e.StartDate).IsRequired();
-            entity.Property(e => e.EndDate).IsRequired();
-            entity.Property(e => e.ExpectedEndDate).IsRequired();
+            entity.Property(e => e.StartDate).IsRequired().HasMaxLength(10);
+            entity.Property(e => e.EndDate).IsRequired().HasMaxLength(10);
+            entity.Property(e => e.ExpectedEndDate).IsRequired().HasMaxLength(10);
 
             entity.HasOne(e => e.Motorcycle)
                 .WithMany()
                 .HasForeignKey(e => e.MotorcycleId)
                 .IsRequired();
+        });
+
+        // DeliveryMan
+        modelBuilder.Entity<DeliveryMan>().ToTable("DeliveryMan", "public");
+        modelBuilder.Entity<DeliveryMan>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.LegalEntity).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.DateOfBirth).IsRequired().HasMaxLength(10);
+            entity.Property(e => e.DriveLicenseNumber).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.DriveLicenseType).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.DriveLicensePhoto).IsRequired();
         });
     }
 }

@@ -1,35 +1,36 @@
 using Microsoft.AspNetCore.Mvc;
+using MotorcycleRentalSystem.Application.Rent;
 
 namespace MotorcycleRentalSystem.Controllers;
 
 [Route("locacao")]
 [ApiController]
-public class RentController : ControllerBase
+public class RentController(IRentService rentService) : ControllerBase
 {
-    [HttpGet]
-    public IEnumerable<string> Get()
-    {
-        return new[] { "value1", "value2" };
-    }
-
     [HttpGet("{id}")]
-    public string Get(int id)
+    public async Task<IActionResult> Get(string id)
     {
-        return "value";
+        var result = await rentService.ConsultRentAsync(id);
+        return result is null ? NotFound("Locação não encontrada") : Created();
     }
 
     [HttpPost]
-    public void Post([FromBody] string value)
+    public async Task<IActionResult> Post([FromBody] RentMotorcycleRequest data)
     {
+        var (rent, moto) = await rentService.MotorcycleRentalProcessAsync(data);
+
+        if (rent == 1 && moto == 1) return Ok();
+
+        return BadRequest("Dados inválidos");
     }
 
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    [HttpPut("{id}/devolucao")]
+    public async Task<IActionResult> Put(string id, [FromBody] DevolveMotorcycleRequest data)
     {
-    }
+        var (rent, moto) = await rentService.MotorcycleDevolveProcessAsync(id, data);
 
-    [HttpDelete("{id}")]
-    public void Delete(int id)
-    {
+        if (rent == 1 && moto == 1) return Ok("Data de devolução informada com sucesso");
+
+        return BadRequest("Dados inválidos");
     }
 }
