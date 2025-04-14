@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MotorcycleRentalSystem.Application.Rent;
+using MotorcycleRentalSystem.Extensions;
+using MotorcycleRentalSystem.Responses;
 
 namespace MotorcycleRentalSystem.Controllers;
 
@@ -11,7 +13,7 @@ public class RentController(IRentService rentService) : ControllerBase
     public async Task<IActionResult> Get(string id)
     {
         var result = await rentService.ConsultRentAsync(id);
-        return result is null ? NotFound("Locação não encontrada") : Created();
+        return result is null ? NotFound(MessageResponse.From(AppMessage.RentNotFound.GetMessage())) : Created();
     }
 
     [HttpPost]
@@ -21,7 +23,7 @@ public class RentController(IRentService rentService) : ControllerBase
 
         if (rent == 1 && moto == 1) return Ok();
 
-        return BadRequest("Dados inválidos");
+        return BadRequest(MessageResponse.From(AppMessage.InvalidData.GetMessage()));
     }
 
     [HttpPut("{id}/devolucao")]
@@ -29,8 +31,8 @@ public class RentController(IRentService rentService) : ControllerBase
     {
         var (rent, moto) = await rentService.MotorcycleDevolveProcessAsync(id, data);
 
-        if (rent == 1 && moto == 1) return Ok("Data de devolução informada com sucesso");
+        if (rent == 1 && moto == 1) return Ok(MessageResponse.From(AppMessage.DevolveDateOk.GetMessage()));
 
-        return BadRequest("Dados inválidos");
+        return BadRequest(MessageResponse.From(AppMessage.InvalidData.GetMessage()));
     }
 }

@@ -8,7 +8,24 @@ public class MotorcycleRepository(PostgreDbContext context) : Repository<Motorcy
 {
     public Task<int> DeleteByIdAsync(string id)
     {
-        context.Motorcycles.Where(motorcycle => motorcycle.Id == id).ExecuteDeleteAsync();
+        var motorcycle = context.Motorcycles.Find(id);
+
+        if (motorcycle == null)
+            return Task.FromResult(0);
+
+        context.Motorcycles.Remove(motorcycle);
         return context.SaveChangesAsync();
+    }
+
+    public Task<List<Motorcycle>> FindAllAsync(string? plate, CancellationToken cancellationToken = default)
+    {
+        var query = context.Motorcycles.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(plate))
+        {
+            query = query.Where(moto => moto.Plate.ToLower() == plate.ToLower());
+        }
+
+        return query.ToListAsync(cancellationToken);
     }
 }

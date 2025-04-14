@@ -8,8 +8,11 @@ WORKDIR /src
 
 COPY ./src/MotorcycleRentalSystem.API/MotorcycleRentalSystem.API.csproj ./MotorcycleRentalSystem.API/
 COPY ./src/MotorcycleRentalSystem.Application/MotorcycleRentalSystem.Application.csproj ./MotorcycleRentalSystem.Application/
-COPY ./src/MotorcycleRentalSystem.Infrastructure/MotorcycleRentalSystem.Infrastructure.csproj ./MotorcycleRentalSystem.Infrastructure/
 COPY ./src/MotorcycleRentalSystem.Domain/MotorcycleRentalSystem.Domain.csproj ./MotorcycleRentalSystem.Domain/
+
+COPY ./src/MotorcycleRentalSystem.Infrastructure/MotorcycleRentalSystem.Infrastructure.csproj ./MotorcycleRentalSystem.Infrastructure/
+COPY ./src/MotorcycleRentalSystem.Infrastructure/Migrations ./MotorcycleRentalSystem.Infrastructure/Migrations/
+
 
 RUN dotnet restore ./MotorcycleRentalSystem.API/MotorcycleRentalSystem.API.csproj
 

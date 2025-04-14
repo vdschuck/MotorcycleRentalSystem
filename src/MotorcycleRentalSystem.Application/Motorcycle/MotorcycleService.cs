@@ -23,11 +23,11 @@ public class MotorcycleService(IMotorcycleRepository repository, ILogger<Motorcy
         return result is null ? null : GetMotorcycleResponse.FromEntity(result);
     }
 
-    public async Task<List<GetMotorcycleResponse>> GetAllMotorcyclesAsync()
+    public async Task<List<GetMotorcycleResponse>> GetAllMotorcyclesAsync(SearchMotorcycleRequest data)
     {
         logger.LogInformation("Get a list of motorcycles");
-        var result = await repository.GetAllAsync();
-        return result.Select(moto => GetMotorcycleResponse.FromEntity(moto)).ToList();
+        var result = await repository.FindAllAsync(data.Plate);
+        return result.Select(GetMotorcycleResponse.FromEntity).ToList();
     }
 
     public Task<int> DeleteMotorcycleAsync(string id)

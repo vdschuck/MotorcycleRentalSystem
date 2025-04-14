@@ -4,7 +4,7 @@ namespace MotorcycleRentalSystem.Domain.Repositories;
 
 public interface IMotorcycleRepository
 {
-    Task<List<Motorcycle>> GetAllAsync();
+    Task<List<Motorcycle>> FindAllAsync(string? plate, CancellationToken cancellationToken = default);
 
     Task<Motorcycle?> GetByIdAsync(string id);
 

@@ -3,8 +3,10 @@ using MotorcycleRentalSystem.Application.DeliveryMan;
 using MotorcycleRentalSystem.Application.Motorcycle;
 using MotorcycleRentalSystem.Application.Rent;
 using MotorcycleRentalSystem.Domain.Repositories;
+using MotorcycleRentalSystem.Extensions;
 using MotorcycleRentalSystem.Infrastructure;
 using MotorcycleRentalSystem.Infrastructure.Repositories;
+using MotorcycleRentalSystem.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +31,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionHandlerMiddleware>();
+
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -38,5 +42,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MigrateDatabase<PostgreDbContext>();
 
 app.Run();

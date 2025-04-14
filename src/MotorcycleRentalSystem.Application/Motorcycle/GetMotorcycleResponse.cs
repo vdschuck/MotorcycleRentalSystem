@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace MotorcycleRentalSystem.Application.Motorcycle;
 
-public record GetMotorcycleResponse(string id, int year, string plate, string model)
+public record GetMotorcycleResponse
 {
     [JsonPropertyName("identificador")]
     public string Id { get; init; }
@@ -18,6 +18,12 @@ public record GetMotorcycleResponse(string id, int year, string plate, string mo
 
     public static GetMotorcycleResponse FromEntity(Domain.Entities.Motorcycle motorcycle)
     {
-        return new GetMotorcycleResponse(motorcycle.Id, motorcycle.Year, motorcycle.Plate, motorcycle.Model);
+        return new GetMotorcycleResponse
+        {
+            Id = motorcycle.Id,
+            Year = motorcycle.Year,
+            Plate = motorcycle.Plate,
+            Model = motorcycle.Model
+        };
     }
 }
