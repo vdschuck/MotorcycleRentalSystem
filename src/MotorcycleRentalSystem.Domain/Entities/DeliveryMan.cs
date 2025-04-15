@@ -1,3 +1,5 @@
+using MotorcycleRentalSystem.Domain.Enums;
+
 namespace MotorcycleRentalSystem.Domain.Entities;
 
 public class DeliveryMan
@@ -19,6 +21,17 @@ public class DeliveryMan
     public void UpdateDriverLicensePhoto(string photo)
     {
         DriveLicensePhoto = photo;
+    }
+
+    public bool IsDriveLicenseTypeValid()
+    {
+        return Enum.IsDefined(typeof(DriveLicenseType), DriveLicenseType.ToUpper());
+    }
+
+    public bool HasMotorcycleLicense()
+    {
+        return DriveLicenseType.Equals(Enums.DriveLicenseType.A.ToString(),
+            StringComparison.InvariantCultureIgnoreCase);
     }
 
     public static DeliveryMan CreateDeliveryMan(string id, string name, string legalEntity, DateTime dateOfBirth,

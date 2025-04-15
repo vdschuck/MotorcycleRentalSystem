@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MotorcycleRentalSystem.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -80,6 +80,27 @@ namespace MotorcycleRentalSystem.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveryMan_DriveLicenseNumber",
+                schema: "public",
+                table: "DeliveryMan",
+                column: "DriveLicenseNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveryMan_LegalEntity",
+                schema: "public",
+                table: "DeliveryMan",
+                column: "LegalEntity",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Motorcycle_Plate",
+                schema: "public",
+                table: "Motorcycle",
+                column: "Plate",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rent_DeliveryManId",

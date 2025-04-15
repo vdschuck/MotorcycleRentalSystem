@@ -16,6 +16,7 @@ public class PostgreDbContext(DbContextOptions<PostgreDbContext> options) : DbCo
 
         // Motorcycle
         modelBuilder.Entity<Motorcycle>().ToTable("Motorcycle", "public");
+        modelBuilder.Entity<Motorcycle>().HasIndex(e => e.Plate).IsUnique();
         modelBuilder.Entity<Motorcycle>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -46,6 +47,8 @@ public class PostgreDbContext(DbContextOptions<PostgreDbContext> options) : DbCo
 
         // DeliveryMan
         modelBuilder.Entity<DeliveryMan>().ToTable("DeliveryMan", "public");
+        modelBuilder.Entity<DeliveryMan>().HasIndex(e => e.LegalEntity).IsUnique();
+        modelBuilder.Entity<DeliveryMan>().HasIndex(e => e.DriveLicenseNumber).IsUnique();
         modelBuilder.Entity<DeliveryMan>(entity =>
         {
             entity.HasKey(e => e.Id);

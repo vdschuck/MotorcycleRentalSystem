@@ -15,6 +15,7 @@ builder.Services.AddDbContext<PostgreDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreConnection")));
 
 // Repositories
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
 builder.Services.AddScoped<IRentRepository, RentRepository>();

@@ -4,7 +4,7 @@ public interface IRentService
 {
     Task<GetRentResponse?> ConsultRentAsync(string id);
 
-    Task<(int, int)> MotorcycleDevolveProcessAsync(string id, DevolveMotorcycleRequest data);
+    Task<decimal> MotorcycleDevolveProcessAsync(string id, DevolveMotorcycleRequest data);
 
-    Task<(int, int)> MotorcycleRentalProcessAsync(RentMotorcycleRequest data);
+    Task MotorcycleRentalProcessAsync(RentMotorcycleRequest data);
 }

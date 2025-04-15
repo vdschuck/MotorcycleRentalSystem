@@ -44,7 +44,7 @@ public class ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionH
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)statusCode;
-        var error = new MessageResponse { Message = errorMessage };
+        var error = MessageResponse.From(errorMessage);
         await context.Response.WriteAsync(JsonSerializer.Serialize(error));
     }
 }

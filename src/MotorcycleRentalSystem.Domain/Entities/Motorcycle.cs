@@ -25,6 +25,11 @@ public class Motorcycle
         IsAvailable = true;
     }
 
+    public bool IsAvailableForRent()
+    {
+        return IsAvailable;
+    }
+
     public static Motorcycle CreateNewMotorcycle(string id, int year, string plateNumber, string model)
     {
         return new Motorcycle

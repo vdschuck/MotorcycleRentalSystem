@@ -11,6 +11,10 @@ public class DeliveryManService(IDeliveryManRepository deliveryManRepository, IL
         logger.LogInformation("Registering delivery man");
         var deliveryMan = Domain.Entities.DeliveryMan.CreateDeliveryMan(data.Id, data.Name, data.LegalEntity,
             data.DateOfBirth, data.DriveLicenseNumber, data.DriveLicenseType, data.DriveLicensePhoto);
+
+        if (!deliveryMan.IsDriveLicenseTypeValid())
+            return Task.FromResult(0);
+
         return deliveryManRepository.AddAsync(deliveryMan);
     }
 

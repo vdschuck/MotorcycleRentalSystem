@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MotorcycleRentalSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(PostgreDbContext))]
-    [Migration("20250414123022_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250415140044_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,6 +60,12 @@ namespace MotorcycleRentalSystem.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DriveLicenseNumber")
+                        .IsUnique();
+
+                    b.HasIndex("LegalEntity")
+                        .IsUnique();
+
                     b.ToTable("DeliveryMan", "public");
                 });
 
@@ -88,6 +94,9 @@ namespace MotorcycleRentalSystem.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Plate")
+                        .IsUnique();
 
                     b.ToTable("Motorcycle", "public");
                 });

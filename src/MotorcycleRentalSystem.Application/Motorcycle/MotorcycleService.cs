@@ -10,6 +10,8 @@ public class MotorcycleService(IMotorcycleRepository repository, ILogger<Motorcy
         logger.LogInformation("Register new motorcycle with {Plate}", data.Plate);
         var newMoto = Domain.Entities.Motorcycle.CreateNewMotorcycle(data.Id, data.Year, data.Plate, data.Model);
         return repository.AddAsync(newMoto);
+
+        // TODO: Send event
     }
 
     public async Task<GetMotorcycleResponse?> GetMotorcycleByIdAsync(string id)

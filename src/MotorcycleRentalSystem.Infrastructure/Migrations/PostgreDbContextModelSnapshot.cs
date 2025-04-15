@@ -57,6 +57,12 @@ namespace MotorcycleRentalSystem.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DriveLicenseNumber")
+                        .IsUnique();
+
+                    b.HasIndex("LegalEntity")
+                        .IsUnique();
+
                     b.ToTable("DeliveryMan", "public");
                 });
 
@@ -85,6 +91,9 @@ namespace MotorcycleRentalSystem.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Plate")
+                        .IsUnique();
 
                     b.ToTable("Motorcycle", "public");
                 });

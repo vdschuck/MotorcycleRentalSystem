@@ -19,20 +19,14 @@ public class RentController(IRentService rentService) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] RentMotorcycleRequest data)
     {
-        var (rent, moto) = await rentService.MotorcycleRentalProcessAsync(data);
-
-        if (rent == 1 && moto == 1) return Ok();
-
-        return BadRequest(MessageResponse.From(AppMessage.InvalidData.GetMessage()));
+        await rentService.MotorcycleRentalProcessAsync(data);
+        return Ok();
     }
 
     [HttpPut("{id}/devolucao")]
     public async Task<IActionResult> Put(string id, [FromBody] DevolveMotorcycleRequest data)
     {
-        var (rent, moto) = await rentService.MotorcycleDevolveProcessAsync(id, data);
-
-        if (rent == 1 && moto == 1) return Ok(MessageResponse.From(AppMessage.DevolveDateOk.GetMessage()));
-
-        return BadRequest(MessageResponse.From(AppMessage.InvalidData.GetMessage()));
+        var totalAmountDue = await rentService.MotorcycleDevolveProcessAsync(id, data);
+        return Ok(MessageResponse.From(AppMessage.DevolveDateOk.GetMessage(), totalAmountDue));
     }
 }
