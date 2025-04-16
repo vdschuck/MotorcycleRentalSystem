@@ -17,9 +17,9 @@ public class DeliveryManController(IDeliveryManService deliveryManService) : Con
     }
 
     [HttpPost("{id}/cnh")]
-    public async Task<IActionResult> Put(string id, [FromBody] UploadDriverLicensePhotoRequest data)
+    public async Task<IActionResult> UploadPhoto(string id, [FromBody] UploadDriverLicensePhotoRequest data)
     {
-        var result = await deliveryManService.UploadDriverLicensePhoto(id, data);
-        return result == 1 ? Created() : BadRequest(MessageResponse.From(AppMessage.InvalidData.GetMessage()));
+        await deliveryManService.UploadDriverLicensePhoto(id, data);
+        return Created();
     }
 }

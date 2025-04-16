@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MotorcycleRentalSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(PostgreDbContext))]
-    [Migration("20250415140044_initialCreate")]
-    partial class initialCreate
+    [Migration("20250416143639_initalCreate")]
+    partial class initalCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,6 +99,23 @@ namespace MotorcycleRentalSystem.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Motorcycle", "public");
+                });
+
+            modelBuilder.Entity("MotorcycleRentalSystem.Domain.Entities.MotorcycleEvent", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("MessageBody")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MotorcycleEvent", "public");
                 });
 
             modelBuilder.Entity("MotorcycleRentalSystem.Domain.Entities.Rent", b =>

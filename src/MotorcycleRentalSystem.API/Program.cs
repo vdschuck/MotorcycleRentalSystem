@@ -3,9 +3,12 @@ using MotorcycleRentalSystem.Application.DeliveryMan;
 using MotorcycleRentalSystem.Application.Motorcycle;
 using MotorcycleRentalSystem.Application.Rent;
 using MotorcycleRentalSystem.Domain.Repositories;
+using MotorcycleRentalSystem.Domain.Services;
 using MotorcycleRentalSystem.Extensions;
 using MotorcycleRentalSystem.Infrastructure;
+using MotorcycleRentalSystem.Infrastructure.Configuration;
 using MotorcycleRentalSystem.Infrastructure.Repositories;
+using MotorcycleRentalSystem.Infrastructure.Services.AWS;
 using MotorcycleRentalSystem.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,12 +23,21 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
 builder.Services.AddScoped<IRentRepository, RentRepository>();
 builder.Services.AddScoped<IDeliveryManRepository, DeliveryManRepository>();
+builder.Services.AddScoped<IMotorcycleEventRepository, MotorcycleEventRepository>();
 
-// Services
+// External Services
+builder.Services.AddScoped<ISimpleStorageService, SimpleStorageService>();
+builder.Services.AddScoped<ISimpleQueueService, SimpleQueueService>();
+
+// Configurations
+builder.Services.Configure<AWSOptions>(builder.Configuration.GetSection("AWS"));
+
+// Application
 builder.Services.AddScoped<IMotorcycleService, MotorcycleService>();
 builder.Services.AddScoped<IRentService, RentService>();
 builder.Services.AddScoped<IDeliveryManService, DeliveryManService>();
 
+// API
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

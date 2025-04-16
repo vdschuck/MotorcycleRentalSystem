@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorcycleRentalSystem.Infr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorcycleRentalSystem.Tests", "MotorcycleRentalSystem.Tests\MotorcycleRentalSystem.Tests.csproj", "{EC7CE5B2-2A1C-45B5-BB45-8BF4C645C455}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorcycleRentalSystem.Worker", "MotorcycleRentalSystem.Worker\MotorcycleRentalSystem.Worker.csproj", "{07620C02-C002-4E51-A243-236A28E061BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{EC7CE5B2-2A1C-45B5-BB45-8BF4C645C455}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC7CE5B2-2A1C-45B5-BB45-8BF4C645C455}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC7CE5B2-2A1C-45B5-BB45-8BF4C645C455}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07620C02-C002-4E51-A243-236A28E061BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07620C02-C002-4E51-A243-236A28E061BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07620C02-C002-4E51-A243-236A28E061BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07620C02-C002-4E51-A243-236A28E061BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>dotnet-MotorcycleRentalSystem.Worker-4c1592fa-6da3-4a17-b92a-5098a51f5dcd</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MotorcycleRentalSystem.Domain\MotorcycleRentalSystem.Domain.csproj"/>
+        <ProjectReference Include="..\MotorcycleRentalSystem.Infrastructure\MotorcycleRentalSystem.Infrastructure.csproj"/>
+    </ItemGroup>
+</Project>

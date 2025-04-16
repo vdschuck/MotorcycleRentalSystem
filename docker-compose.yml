@@ -16,13 +16,25 @@ services:
       start_period: 30s
       timeout: 10s
 
-  motorcyclerentalsystem:
+  motorcycle-rental-system-api:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: motorcyclerentalsystem
+      dockerfile: src/MotorcycleRentalSystem.API/Dockerfile
+    container_name: motorcycle-rental-system-api
     ports:
       - "5001:8080"
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  motorcycle-rental-system-worker:
+    build:
+      context: .
+      dockerfile: src/MotorcycleRentalSystem.Worker/Dockerfile
+    container_name: motorcycle-rental-system-worker
+    ports:
+      - "5002:8080"
     restart: unless-stopped
     depends_on:
       postgres:

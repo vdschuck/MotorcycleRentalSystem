@@ -1,17 +1,23 @@
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using MotorcycleRentalSystem.Domain.Repositories;
+using MotorcycleRentalSystem.Domain.Services;
 
 namespace MotorcycleRentalSystem.Application.Motorcycle;
 
-public class MotorcycleService(IMotorcycleRepository repository, ILogger<MotorcycleService> logger) : IMotorcycleService
+public class MotorcycleService(
+    IMotorcycleRepository repository,
+    ISimpleQueueService sqs,
+    ILogger<MotorcycleService> logger) : IMotorcycleService
 {
-    public Task<int> RegisterNewMotorcycleAsync(CreateMotorcycleRequest data)
+    public async Task<int> RegisterNewMotorcycleAsync(CreateMotorcycleRequest data)
     {
         logger.LogInformation("Register new motorcycle with {Plate}", data.Plate);
         var newMoto = Domain.Entities.Motorcycle.CreateNewMotorcycle(data.Id, data.Year, data.Plate, data.Model);
-        return repository.AddAsync(newMoto);
-
-        // TODO: Send event
+        var result = await repository.AddAsync(newMoto);
+        var newEvent = GetMotorcycleResponse.FromEntity(newMoto);
+        await sqs.SendMessageAsync(JsonSerializer.Serialize(newEvent));
+        return result;
     }
 
     public async Task<GetMotorcycleResponse?> GetMotorcycleByIdAsync(string id)
@@ -25,10 +31,10 @@ public class MotorcycleService(IMotorcycleRepository repository, ILogger<Motorcy
         return result is null ? null : GetMotorcycleResponse.FromEntity(result);
     }
 
-    public async Task<List<GetMotorcycleResponse>> GetAllMotorcyclesAsync(SearchMotorcycleRequest data)
+    public async Task<List<GetMotorcycleResponse>> GetAllMotorcyclesAsync(SearchMotorcycleRequest? data)
     {
         logger.LogInformation("Get a list of motorcycles");
-        var result = await repository.FindAllAsync(data.Plate);
+        var result = await repository.FindAllAsync(data?.Plate);
         return result.Select(GetMotorcycleResponse.FromEntity).ToList();
     }
 

@@ -7,8 +7,8 @@ public class PostgreDbContext(DbContextOptions<PostgreDbContext> options) : DbCo
 {
     public DbSet<Motorcycle> Motorcycles { get; set; }
     public DbSet<Rent> Rents { get; set; }
-
     public DbSet<DeliveryMan> DeliveryMans { get; set; }
+    public DbSet<MotorcycleEvent> MotorcycleEvents { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -58,6 +58,15 @@ public class PostgreDbContext(DbContextOptions<PostgreDbContext> options) : DbCo
             entity.Property(e => e.DriveLicenseNumber).IsRequired().HasMaxLength(50);
             entity.Property(e => e.DriveLicenseType).IsRequired().HasMaxLength(50);
             entity.Property(e => e.DriveLicensePhoto).IsRequired();
+        });
+
+        // Motorcycle Event
+        modelBuilder.Entity<MotorcycleEvent>().ToTable("MotorcycleEvent", "public");
+        modelBuilder.Entity<MotorcycleEvent>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.MessageBody).IsRequired();
+            entity.Property(e => e.CreatedAt).IsRequired();
         });
     }
 }

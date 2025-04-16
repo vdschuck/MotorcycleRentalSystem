@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MotorcycleRentalSystem.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate : Migration
+    public partial class initalCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,6 +46,20 @@ namespace MotorcycleRentalSystem.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Motorcycle", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MotorcycleEvent",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    MessageBody = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MotorcycleEvent", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -118,6 +132,10 @@ namespace MotorcycleRentalSystem.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "MotorcycleEvent",
+                schema: "public");
+
             migrationBuilder.DropTable(
                 name: "Rent",
                 schema: "public");

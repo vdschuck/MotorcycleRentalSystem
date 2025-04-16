@@ -1,9 +1,16 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MotorcycleRentalSystem.Domain.Repositories;
+using MotorcycleRentalSystem.Domain.Services;
+using MotorcycleRentalSystem.Infrastructure.Configuration;
 
 namespace MotorcycleRentalSystem.Application.DeliveryMan;
 
-public class DeliveryManService(IDeliveryManRepository deliveryManRepository, ILogger<DeliveryManService> logger)
+public class DeliveryManService(
+    IDeliveryManRepository deliveryManRepository,
+    ISimpleStorageService s3,
+    IOptions<AWSOptions> awsOptions,
+    ILogger<DeliveryManService> logger)
     : IDeliveryManService
 {
     public Task<int> RegisterDeliveryMan(CreateDeliveryManRequest data)
@@ -18,14 +25,17 @@ public class DeliveryManService(IDeliveryManRepository deliveryManRepository, IL
         return deliveryManRepository.AddAsync(deliveryMan);
     }
 
-    public async Task<int> UploadDriverLicensePhoto(string id, UploadDriverLicensePhotoRequest data)
+    public async Task UploadDriverLicensePhoto(string id, UploadDriverLicensePhotoRequest data)
     {
-        logger.LogInformation("Uploading driver license photo");
-        // TODO: upload photo for S3
-        var photoPath = string.Empty;
         var deliveryMan = await deliveryManRepository.GetByIdAsync(id);
-        if (deliveryMan is null) return 0;
-        deliveryMan.UpdateDriverLicensePhoto(photoPath);
-        return await deliveryManRepository.UpdateAsync(deliveryMan);
+        if (deliveryMan is null)
+            throw new InvalidOperationException("The informed driver was not found");
+
+        logger.LogInformation("Uploading driver license photo");
+        var imageBytes = Convert.FromBase64String(data.DriveLicensePhoto);
+        var filename = $"cnh_{id}_{DateTime.Now:yyyyMMddHHmmss}.jpg";
+        var urlImage = await s3.UploadImagemAsync(imageBytes, filename, awsOptions.Value.S3.DriveLicensePhoto);
+        deliveryMan.UpdateDriverLicensePhoto(urlImage);
+        await deliveryManRepository.UpdateAsync(deliveryMan);
     }
 }

@@ -10,5 +10,5 @@ public interface IMotorcycleService
 
     Task<GetMotorcycleResponse?> GetMotorcycleByIdAsync(string id);
 
-    Task<List<GetMotorcycleResponse>> GetAllMotorcyclesAsync(SearchMotorcycleRequest data);
+    Task<List<GetMotorcycleResponse>> GetAllMotorcyclesAsync(SearchMotorcycleRequest? data);
 }

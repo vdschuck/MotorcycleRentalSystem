@@ -4,5 +4,5 @@ public interface IDeliveryManService
 {
     Task<int> RegisterDeliveryMan(CreateDeliveryManRequest data);
 
-    Task<int> UploadDriverLicensePhoto(string id, UploadDriverLicensePhotoRequest data);
+    Task UploadDriverLicensePhoto(string id, UploadDriverLicensePhotoRequest data);
 }
